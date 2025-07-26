@@ -43,10 +43,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-username/enable-ai-sdk"
-Documentation = "https://docs.enable.ai"
-Repository = "https://github.com/your-username/enable-ai-sdk"
-"Bug Tracker" = "https://github.com/your-username/enable-ai-sdk/issues"
+Homepage = "https://www.weenable.ai"
+Documentation = "https://www.weenable.ai"
+Repository = "https://github.com/dmartin4506/enable-ai-sdk"
+"Bug Tracker" = "https://github.com/dmartin4506/enable-ai-sdk/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

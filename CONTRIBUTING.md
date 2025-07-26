@@ -14,7 +14,7 @@ Thank you for your interest in contributing to the EnableAI SDK! This document p
 
 1. **Fork and clone the repository**
    ```bash
-   git clone https://github.com/your-username/enable-ai-sdk.git
+   git clone https://github.com/dmartin4506/enable-ai-sdk.git
    cd enable-ai-sdk
    ```
 
@@ -219,7 +219,7 @@ enable-ai-sdk/
 
 - **GitHub Issues:** For bug reports and feature requests
 - **GitHub Discussions:** For questions and general discussion
-- **Email:** support@enable.ai for urgent issues
+- **Email:** support@weenable.ai for urgent issues
 
 ## 🎯 Areas for Contribution
 

@@ -1,12 +1,12 @@
 # EnableAI Agentic AI Platform SDK
 
-A comprehensive Python SDK for the EnableAI Agentic AI Platform, providing easy-to-use interfaces for agent management, analytics, content generation, and more.
+A comprehensive Python SDK for the EnableAI Agentic AI Platform, providing easy-to-use interfaces for agent management, analytics, self-healing, and webhooks.
 
 ## 🚀 Features
 
 - **Agent Management**: Register, update, and manage AI agents
 - **Analytics & Insights**: Get detailed analytics and performance insights
-- **Content Generation**: Generate presentations, FAQs, battlecards, and more
+
 - **Self-Healing**: Monitor and automatically heal underperforming agents
 - **Webhook Management**: Configure real-time notifications
 - **Feedback System**: Submit and evaluate AI responses

@@ -19,7 +19,7 @@ setup(
     description="A comprehensive Python SDK for the EnableAI Agentic AI Platform",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/your-repo/enable-ai-sdk",
+    url="https://www.weenable.ai",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -49,8 +49,8 @@ setup(
     },
     keywords="ai, agent, analytics, feedback, webhooks, self-healing",
     project_urls={
-        "Bug Reports": "https://github.com/your-repo/enable-ai-sdk/issues",
-        "Source": "https://github.com/your-repo/enable-ai-sdk",
-        "Documentation": "https://docs.enable.ai",
+        "Bug Reports": "https://github.com/dmartin4506/enable-ai-sdk/issues",
+        "Source": "https://github.com/dmartin4506/enable-ai-sdk",
+        "Documentation": "https://www.weenable.ai",
     },
 ) 

@@ -1,12 +1,11 @@
 # EnableAI Agentic AI Platform SDK
 
-A comprehensive Python SDK for the EnableAI Agentic AI Platform, providing easy-to-use interfaces for agent management, analytics, content generation, and more.
+A comprehensive Python SDK for the EnableAI Agentic AI Platform, providing easy-to-use interfaces for agent management, analytics, self-healing, and webhooks.
 
 ## 🚀 Features
 
 - **Agent Management**: Register, update, and manage AI agents
 - **Analytics & Insights**: Get detailed analytics and performance insights
-- **Content Generation**: Generate presentations, FAQs, battlecards, and more
 - **Self-Healing**: Monitor and automatically heal underperforming agents
 - **Webhook Management**: Configure real-time notifications
 - **Feedback System**: Submit and evaluate AI responses
@@ -15,7 +14,7 @@ A comprehensive Python SDK for the EnableAI Agentic AI Platform, providing easy-
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/enable-ai-sdk.git
+git clone https://github.com/dmartin4506/enable-ai-sdk.git
 cd enable-ai-sdk
 
 # Install the package
@@ -477,10 +476,10 @@ agent = api_call_with_retry(client, client.agents.register, "Test Agent", "custo
 
 For support and questions:
 
-- **Documentation**: [https://docs.enable.ai](https://docs.enable.ai)
-- **API Reference**: [https://api.enable.ai/docs](https://api.enable.ai/docs)
-- **GitHub Issues**: [https://github.com/your-username/enable-ai-sdk/issues](https://github.com/your-username/enable-ai-sdk/issues)
-- **Email**: support@enable.ai
+- **Documentation**: [https://www.weenable.ai](https://www.weenable.ai)
+- **API Reference**: [https://www.weenable.ai](https://www.weenable.ai)
+- **GitHub Issues**: [https://github.com/dmartin4506/enable-ai-sdk/issues](https://github.com/dmartin4506/enable-ai-sdk/issues)
+- **Email**: support@weenable.ai
 
 ## 📄 License
 
