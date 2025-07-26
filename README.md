@@ -27,12 +27,13 @@ pip install enable-ai-sdk
 ## 🔑 Quick Start
 
 ```python
+import os
 from enable_ai_sdk import EnableAIClient
 
 # Initialize client
 client = EnableAIClient(
-    api_key="your-api-key-here",
-    base_url="https://your-backend.com"
+    api_key=os.getenv('ENABLE_AI_API_KEY'),  # Use environment variable
+    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
 )
 
 # Register an agent
@@ -51,13 +52,20 @@ print(f"✅ Registered agent: {agent.name} (ID: {agent.id})")
 ### Client Initialization
 
 ```python
+import os
 from enable_ai_sdk import EnableAIClient, create_client
 
 # Method 1: Direct initialization
-client = EnableAIClient(api_key="your-key", base_url="https://api.enable.ai")
+client = EnableAIClient(
+    api_key=os.getenv('ENABLE_AI_API_KEY'),
+    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
+)
 
 # Method 2: Using convenience function
-client = create_client(api_key="your-key", base_url="https://api.enable.ai")
+client = create_client(
+    api_key=os.getenv('ENABLE_AI_API_KEY'),
+    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
+)
 ```
 
 ### Agent Management
@@ -188,18 +196,19 @@ client.webhooks.delete(webhook_id=123)
 For quick operations, you can use the convenience functions:
 
 ```python
+import os
 from enable_ai_sdk import quick_agent_register, quick_feedback_submit
 
 # Quick agent registration
 agent = quick_agent_register(
-    api_key="your-key",
+    api_key=os.getenv('ENABLE_AI_API_KEY'),
     name="Quick Agent",
     agent_type="customer-support"
 )
 
 # Quick feedback submission
 feedback = quick_feedback_submit(
-    api_key="your-key",
+    api_key=os.getenv('ENABLE_AI_API_KEY'),
     prompt="What is your return policy?",
     response="Our return policy allows returns within 30 days.",
     tool="CustomerFeedback",
@@ -212,10 +221,11 @@ feedback = quick_feedback_submit(
 The SDK provides specific exception types for different error scenarios:
 
 ```python
+import os
 from enable_ai_sdk import EnableAIClient, AuthenticationError, ValidationError, RateLimitError
 
 try:
-    client = EnableAIClient(api_key="invalid-key")
+    client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
     agent = client.agents.register(name="Test", agent_type="test", llm="test")
 except AuthenticationError as e:
     print(f"Authentication failed: {e}")
@@ -286,8 +296,8 @@ import time
 def main():
     # Initialize client
     client = EnableAIClient(
-        api_key="your-api-key",
-        base_url="https://your-backend.com"
+        api_key=os.getenv('ENABLE_AI_API_KEY'),
+        base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
     )
     
     # Register an agent
@@ -352,7 +362,7 @@ from flask import Flask, request, jsonify
 from enable_ai_sdk import EnableAIClient
 
 app = Flask(__name__)
-client = EnableAIClient(api_key="your-key")
+client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
 
 @app.route('/register_agent', methods=['POST'])
 def register_agent():
@@ -386,12 +396,13 @@ def submit_feedback():
 ### Django Integration
 
 ```python
+import os
+import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from enable_ai_sdk import EnableAIClient
-import json
 
-client = EnableAIClient(api_key="your-key")
+client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
 
 @csrf_exempt
 def register_agent(request):
@@ -408,19 +419,75 @@ def register_agent(request):
         })
 ```
 
-## 🚀 Production Considerations
+## 🔒 Security Best Practices
 
-### Environment Variables
+**Important**: The SDK is designed to be secure, but users are responsible for implementing proper security practices in their applications.
+
+### 1. **Secure API Key Management** ⚠️
+Never hardcode API keys in your source code. Always use environment variables:
 
 ```python
 import os
 from enable_ai_sdk import EnableAIClient
 
+# ✅ SECURE: Use environment variables
 client = EnableAIClient(
     api_key=os.getenv('ENABLE_AI_API_KEY'),
     base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
 )
+
+# ❌ INSECURE: Never do this
+client = EnableAIClient(
+    api_key="sk-1234567890abcdef",  # Don't hardcode!
+    base_url="https://api.enable.ai"
+)
 ```
+
+### 2. **Use HTTPS in Production** ⚠️
+Always use HTTPS URLs in production environments:
+
+```python
+# ✅ SECURE: Use HTTPS
+client = EnableAIClient(
+    api_key=os.getenv('ENABLE_AI_API_KEY'),
+    base_url="https://api.enable.ai"  # HTTPS for production
+)
+
+# ❌ INSECURE: Don't use HTTP in production
+client = EnableAIClient(
+    api_key=os.getenv('ENABLE_AI_API_KEY'),
+    base_url="http://localhost:5001"  # Only for development
+)
+```
+
+### 3. **Implement Proper Error Handling** ⚠️
+Handle errors gracefully without exposing sensitive information:
+
+```python
+import logging
+from enable_ai_sdk import EnableAIClient, EnableAIError
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def safe_api_call(func, *args, **kwargs):
+    try:
+        return func(*args, **kwargs)
+    except EnableAIError as e:
+        logger.error(f"EnableAI API error: {e}")
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return None
+
+# Usage
+client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
+agent = safe_api_call(client.agents.register, "Test Agent", "customer-support", "claude-3-5-sonnet-20241022")
+```
+
+## 🚀 Production Considerations
+
+### Environment Variables
 
 ### Error Handling
 
@@ -442,7 +509,7 @@ def safe_api_call(func, *args, **kwargs):
         return None
 
 # Usage
-client = EnableAIClient(api_key="your-key")
+client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
 agent = safe_api_call(client.agents.register, "Test Agent", "customer-support", "claude-3-5-sonnet-20241022")
 ```
 
@@ -468,7 +535,7 @@ def api_call_with_retry(client, func, *args, **kwargs):
             raise e
 
 # Usage
-client = EnableAIClient(api_key="your-key")
+client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
 agent = api_call_with_retry(client, client.agents.register, "Test Agent", "customer-support", "claude-3-5-sonnet-20241022")
 ```
 
