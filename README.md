@@ -26,6 +26,26 @@ pip install enable-ai-sdk
 
 ## 🔑 Quick Start
 
+### Option 1: Progressive Samples (Recommended)
+Start with our progressive samples to learn the SDK step by step:
+
+```bash
+# Step 1: Test SDK installation
+cd samples/01-beginner
+python test_sdk_import.py
+
+# Step 2: Test core functionality
+cd ../02-intermediate
+# Edit simple_agent_template.py to add your API key
+python simple_agent_template.py
+
+# Step 3: Test advanced features
+cd ../03-advanced
+# Edit agent_template.py to add your API key
+python agent_template.py
+```
+
+### Option 2: Direct Usage
 ```python
 import os
 from enable_ai_sdk import EnableAIClient
@@ -46,6 +66,22 @@ agent = client.agents.register(
 
 print(f"✅ Registered agent: {agent.name} (ID: {agent.id})")
 ```
+
+## 📚 Samples & Examples
+
+### Progressive Learning Samples
+We provide a structured learning path with progressive samples:
+
+- **📚 Beginner (01-beginner)**: Test SDK installation and basic setup
+- **🚀 Intermediate (02-intermediate)**: Test core functionality (agents, feedback, analytics)
+- **🔧 Advanced (03-advanced)**: Test all features with interactive options
+
+See [samples/README.md](samples/README.md) for detailed instructions.
+
+### Integration Examples
+Check the [examples/](examples/) directory for:
+- `basic_usage.py` - Basic SDK usage examples
+- `flask_integration.py` - Flask web application integration
 
 ## 📚 API Reference
 
