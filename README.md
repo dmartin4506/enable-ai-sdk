@@ -82,6 +82,7 @@ See [samples/README.md](samples/README.md) for detailed instructions.
 Check the [examples/](examples/) directory for:
 - `basic_usage.py` - Basic SDK usage examples
 - `flask_integration.py` - Flask web application integration
+- `real_agent_integration.py` - Real AI agent integration with OpenAI/Claude
 
 ## 📚 API Reference
 
