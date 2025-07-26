@@ -27,6 +27,13 @@ The samples are organized in a progressive learning path:
 - **Time**: ~10-15 minutes
 - **Prerequisites**: API key and backend URL
 
+### 🤖 Step 4: Real Agent (03-advanced)
+**Goal**: Test with actual AI agents using real AI providers
+- **File**: `real_agent_template.py`
+- **What it tests**: Real AI agents with OpenAI/Claude + EnableAI integration
+- **Time**: ~15-20 minutes
+- **Prerequisites**: API key, backend URL, and OpenAI/Anthropic API keys
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -53,6 +60,13 @@ python simple_agent_template.py
 cd ../03-advanced
 # Edit agent_template.py to add your API key
 python agent_template.py
+```
+
+### Step 4: Test Real AI Agents (Optional)
+```bash
+cd ../03-advanced
+# Edit real_agent_template.py to add your API keys
+python real_agent_template.py
 ```
 
 ## 📁 Sample Details
@@ -147,6 +161,24 @@ This is Step 2: Testing Core SDK Functionality
 - **Detailed Analytics**: Comprehensive performance insights
 - **Error Handling**: Robust error reporting
 - **Customizable**: Easy to modify test data
+
+### 03-advanced/real_agent_template.py
+**Purpose**: Real AI agents with actual AI capabilities
+
+**What it does**:
+- ✅ Real AI agent using OpenAI/Claude APIs
+- ✅ Integration with EnableAI for feedback evaluation
+- ✅ Interactive chat mode with real responses
+- ✅ Automated testing with predefined queries
+- ✅ Real-time performance monitoring
+- ✅ Fallback to mock responses if no AI provider
+
+**Features**:
+- **Real AI Responses**: Uses actual OpenAI GPT or Claude models
+- **Interactive Chat**: Chat with the agent in real-time
+- **Feedback Integration**: Every response gets evaluated by EnableAI
+- **Performance Tracking**: Monitor agent performance over time
+- **Flexible Configuration**: Use OpenAI, Claude, or mock responses
 
 ## 🔧 Configuration
 
