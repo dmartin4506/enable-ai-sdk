@@ -3,7 +3,7 @@ import os
 
 # Read the README file
 def read_readme():
-    with open("SDK_README.md", "r", encoding="utf-8") as fh:
+    with open("README.md", "r", encoding="utf-8") as fh:
         return fh.read()
 
 # Read requirements
