@@ -50,7 +50,7 @@ class AgentMonitor:
     def __init__(self, 
                  agent_id: str,
                  api_key: str,
-                 base_url: str = "http://localhost:5001",
+                 base_url: str = "https://api.weenable.ai",
                  auto_healing: bool = True,
                  report_async: bool = True,
                  system_prompt: Optional[str] = None):
@@ -60,7 +60,7 @@ class AgentMonitor:
         Args:
             agent_id: Your agent's ID from EnableAI platform
             api_key: Your EnableAI API key
-            base_url: EnableAI backend URL
+            base_url: EnableAI backend URL (defaults to production)
             auto_healing: Whether to automatically apply prompt improvements
             report_async: Whether to report performance asynchronously
             system_prompt: Current system prompt (will be updated by self-healing)
@@ -350,7 +350,7 @@ class SimpleAgentMonitor(AgentMonitor):
                  agent_id: str,
                  api_key: str,
                  ai_model_func: Callable[[str], str],
-                 base_url: str = "http://localhost:5001",
+                 base_url: str = "https://api.weenable.ai",
                  **kwargs):
         """
         Initialize with a simple AI model function
@@ -374,7 +374,7 @@ class SimpleAgentMonitor(AgentMonitor):
 def create_monitored_agent(agent_id: str, 
                           api_key: str, 
                           ai_model_func: Callable[[str], str],
-                          base_url: str = "http://localhost:5001",
+                          base_url: str = "https://api.weenable.ai",
                           **kwargs) -> SimpleAgentMonitor:
     """
     Create a monitored agent with minimal setup
