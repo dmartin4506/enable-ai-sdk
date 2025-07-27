@@ -1,59 +1,255 @@
 # EnableAI Agentic AI Platform SDK
 
-A comprehensive Python SDK for the EnableAI Agentic AI Platform, providing easy-to-use interfaces for agent management, analytics, self-healing, and webhooks.
+A **drop-in SDK** for automatic agent monitoring and self-healing. Simply wrap your existing AI agent and get automatic performance evaluation, quality scoring, and prompt improvements.
 
 ## 🚀 Features
 
-- **Agent Management**: Register, update, and manage AI agents
-- **Analytics & Insights**: Get detailed analytics and performance insights
-- **Self-Healing**: Monitor and automatically heal underperforming agents
-- **Webhook Management**: Configure real-time notifications
-- **Feedback System**: Submit and evaluate AI responses
+- **Drop-in Integration**: Just import and wrap your agent
+- **Automatic Monitoring**: Every interaction gets evaluated
+- **Self-Healing**: Automatic improvements when performance degrades
+- **Quality Evaluation**: Claude-powered 1-100 scoring
+- **Real-time Analytics**: Performance insights and trends
+- **Background Monitoring**: Continuous health checking
 
 ## 📦 Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/dmartin4506/enable-ai-sdk.git
-cd enable-ai-sdk
-
-# Install the package
-pip install -e .
-
-# Or install directly from PyPI (when published)
+# Install the drop-in SDK
 pip install enable-ai-sdk
+
+# Or install from local directory
+pip install -e .
 ```
 
-## 🔑 Quick Start
+## 🔑 Quick Start (3 Lines!)
 
-### Option 1: Progressive Samples (Recommended)
-Start with our progressive samples to learn the SDK step by step:
-
-```bash
-# Step 1: Test SDK installation
-cd samples/01-beginner
-python test_sdk_import.py
-
-# Step 2: Test core functionality
-cd ../02-intermediate
-# Edit simple_agent_template.py to add your API key
-python simple_agent_template.py
-
-# Step 3: Test advanced features
-cd ../03-advanced
-# Edit agent_template.py to add your API key
-python agent_template.py
-```
-
-### Option 2: Direct Usage
 ```python
-import os
+from enable_ai_sdk.agent_monitor import create_monitored_agent
+
+# Wrap your existing AI model
+monitored_agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
+
+# Use it normally - everything is automatic!
+response = monitored_agent.generate_response("What is your return policy?")
+
+# The SDK automatically:
+# - Reports performance for evaluation
+# - Gets quality scores from Claude
+# - Triggers self-healing when needed
+# - Applies prompt improvements
+```
+
+## 📚 API Reference
+
+### Simple Integration
+
+```python
+from enable_ai_sdk.agent_monitor import create_monitored_agent
+
+# Your existing AI model function
+def your_ai_model(prompt: str) -> str:
+    return "Response from your AI model"
+
+# Create monitored agent (3 lines!)
+monitored_agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
+
+# Use it normally
+response = monitored_agent.generate_response("Hello!")
+```
+
+### Advanced Integration
+
+```python
+from enable_ai_sdk.agent_monitor import AgentMonitor
+import openai
+
+class MonitoredCustomerSupportAgent(AgentMonitor):
+    def _call_ai_model(self, prompt: str, **kwargs) -> str:
+        # Your AI model integration here
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": self.system_prompt},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response.choices[0].message.content
+
+# Create the agent
+agent = MonitoredCustomerSupportAgent(
+    agent_id="your-agent-id",
+    api_key="your-api-key"
+)
+
+# Use it - everything is automatic!
+response = agent.generate_response("What is your return policy?")
+```
+
+### AWS Lambda Integration
+
+```python
+import json
+from enable_ai_sdk.agent_monitor import create_monitored_agent
+
+# Your AI model function
+def my_ai_model(prompt: str) -> str:
+    return "Response from your AI model"
+
+# Create monitored agent
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=my_ai_model
+)
+
+def lambda_handler(event, context):
+    user_input = event['body']['message']
+    response = agent.generate_response(user_input)  # Automatically monitored!
+    return {'response': response}
+```
+
+## 📊 What Gets Tracked Automatically
+
+### Performance Metrics
+- **Quality Score**: 1-100 rating from Claude
+- **Response Time**: How long your agent takes
+- **Issue Categories**: Hallucination, tone, format, etc.
+- **Usage Patterns**: When and how your agent is used
+
+### Self-Healing Triggers
+- **Poor Performance**: Average score < 75
+- **Critical Issues**: Average score < 60
+- **Declining Trends**: Performance getting worse
+- **Specific Issues**: Hallucination, tone problems, etc.
+
+### Automatic Actions
+- **Prompt Improvements**: AI-generated better prompts
+- **Health Monitoring**: Real-time status checking
+- **Performance Reporting**: Every interaction evaluated
+- **Insight Generation**: AI recommendations
+
+## 🔧 Configuration Options
+
+### Basic Setup
+```python
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
+```
+
+### Advanced Configuration
+```python
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    base_url="https://your-backend.com",
+    auto_healing=True,      # Enable automatic prompt improvements
+    report_async=True       # Report performance asynchronously
+)
+```
+
+### Custom Agent Class
+```python
+class MyMonitoredAgent(AgentMonitor):
+    def _call_ai_model(self, prompt: str, **kwargs) -> str:
+        # Your custom AI model integration
+        return your_ai_model.generate(prompt)
+
+agent = MyMonitoredAgent(
+    agent_id="your-agent-id",
+    api_key="your-api-key"
+)
+```
+
+## 🎯 Key Benefits
+
+### For Agent Developers
+1. **Drop-in Integration**: Just import and wrap your agent
+2. **Automatic Monitoring**: Every interaction gets evaluated
+3. **Self-Healing**: Automatic improvements when needed
+4. **Real-time Insights**: Performance analytics and recommendations
+
+### For Agent Operators
+1. **Zero Manual Work**: Everything is automatic
+2. **Proactive Alerts**: Get notified when agents need attention
+3. **Continuous Improvement**: Agents get better over time
+4. **Comprehensive Analytics**: Detailed performance tracking
+
+## 🔄 Complete Workflow
+
+### 1. Register Your Agent
+```python
+# In your EnableAI console or via API
+agent_id = register_agent("My Customer Support Agent")
+```
+
+### 2. Wrap Your Agent
+```python
+from enable_ai_sdk.agent_monitor import create_monitored_agent
+
+# Your existing AI model
+def my_ai_model(prompt: str) -> str:
+    return your_ai_model.generate(prompt)
+
+# Create monitored agent
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=my_ai_model
+)
+```
+
+### 3. Use Normally
+```python
+# Use it like any other agent
+response = agent.generate_response("What is your return policy?")
+
+# Everything is automatic:
+# ✅ Performance reported
+# ✅ Quality evaluated
+# ✅ Self-healing triggered if needed
+# ✅ Prompt improvements applied
+```
+
+## 📚 Additional Resources
+
+### Manual API Access (Advanced Users)
+If you need direct API access for custom integrations, see the [Manual API Reference](#manual-api-reference) section below.
+
+### Examples
+- [Basic Integration](examples/basic_usage.py)
+- [Flask Integration](examples/flask_integration.py)
+- [Real Agent Integration](examples/real_agent_integration.py)
+
+### Documentation
+- [Complete API Reference](SDK_README.md)
+- [Installation Guide](INSTALLATION_GUIDE.md)
+- [Integration Examples](examples/)
+
+## 🔧 Manual API Reference
+
+For advanced users who need direct API access:
+
+### Client Initialization
+
+```python
 from enable_ai_sdk import EnableAIClient
 
 # Initialize client
 client = EnableAIClient(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),  # Use environment variable
-    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
+    api_key="your-api-key-here",
+    base_url="https://your-backend.com"
 )
 
 # Register an agent
@@ -65,44 +261,6 @@ agent = client.agents.register(
 )
 
 print(f"✅ Registered agent: {agent.name} (ID: {agent.id})")
-```
-
-## 📚 Samples & Examples
-
-### Progressive Learning Samples
-We provide a structured learning path with progressive samples:
-
-- **📚 Beginner (01-beginner)**: Test SDK installation and basic setup
-- **🚀 Intermediate (02-intermediate)**: Test core functionality (agents, feedback, analytics)
-- **🔧 Advanced (03-advanced)**: Test all features with interactive options
-
-See [samples/README.md](samples/README.md) for detailed instructions.
-
-### Integration Examples
-Check the [examples/](examples/) directory for:
-- `basic_usage.py` - Basic SDK usage examples
-- `flask_integration.py` - Flask web application integration
-- `real_agent_integration.py` - Real AI agent integration with OpenAI/Claude
-
-## 📚 API Reference
-
-### Client Initialization
-
-```python
-import os
-from enable_ai_sdk import EnableAIClient, create_client
-
-# Method 1: Direct initialization
-client = EnableAIClient(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
-    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
-)
-
-# Method 2: Using convenience function
-client = create_client(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
-    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
-)
 ```
 
 ### Agent Management
@@ -123,129 +281,97 @@ for agent in agents:
     print(f"- {agent.name} ({agent.agent_type})")
 
 # Get specific agent
-agent = client.agents.get(agent_id="agent-uuid")
+agent = client.agents.get(agent_id="your-agent-id")
 
 # Update agent
 updated_agent = client.agents.update(
-    agent_id="agent-uuid",
+    agent_id="your-agent-id",
     name="Updated Agent Name",
-    description="New description"
+    description="Updated description"
 )
 
 # Delete agent
-client.agents.delete(agent_id="agent-uuid")
-
-# Get prompt history
-history = client.agents.get_prompt_history(agent_id="agent-uuid")
+client.agents.delete(agent_id="your-agent-id")
 ```
 
-### Analytics & Insights
+### Analytics & Feedback
 
 ```python
-# Get agent insights
-insights = client.analytics.get_agent_insights(
-    agent_id="agent-uuid",
-    start_date="2024-01-01T00:00:00Z",
-    end_date="2024-01-31T23:59:59Z"
-)
-
-print(f"Agent: {insights.agent_name}")
-print(f"Score Trend: {insights.score_trend}")
-print(f"Average Score: {insights.average_score}")
-print(f"Recent Issues: {insights.recent_issues}")
-
-# Get detailed analytics
-analytics = client.analytics.get_agent_analytics(
-    agent_id="agent-uuid",
-    start_date="2024-01-01T00:00:00Z",
-    end_date="2024-01-31T23:59:59Z",
-    tool="CustomerFeedback",
-    use_case="Customer Support"
-)
-
 # Submit feedback for evaluation
 feedback = client.analytics.submit_feedback(
     prompt="What is your return policy?",
-    response="Our return policy allows returns within 30 days.",
+    response="Our return policy allows returns within 30 days of purchase.",
     tool="CustomerFeedback",
     use_case="Customer Support",
-    agent_id="agent-uuid"
+    agent_id="your-agent-id"
 )
 
-print(f"Feedback Score: {feedback.score}")
-print(f"Issue: {feedback.issue}")
+print(f"✅ Feedback submitted - Score: {feedback.score}")
+
+# Get agent insights
+insights = client.analytics.get_agent_insights(agent_id="your-agent-id")
+
+print(f"✅ Agent insights:")
+print(f"   - Trend: {insights.score_trend}")
+print(f"   - Average Score: {insights.average_score}")
+print(f"   - Recent Issues: {len(insights.recent_issues)}")
+print(f"   - Suggested Actions: {len(insights.suggested_actions)}")
 ```
 
-### Self-Healing Management
+### Self-Healing
 
 ```python
 # Run self-healing scan
 scan_results = client.self_healing.scan()
 
+print(f"✅ Self-healing scan completed:")
+print(f"   - Agents scanned: {scan_results['total_agents_scanned']}")
+print(f"   - Agents flagged: {len(scan_results['agents_flagged'])}")
+
 # Get agent healing status
-status = client.self_healing.get_agent_status(agent_id="agent-uuid")
+healing_status = client.self_healing.get_agent_healing_status(agent_id="your-agent-id")
 
 # Heal an agent
-healing_result = client.self_healing.heal_agent(
-    agent_id="agent-uuid",
-    strategy="auto",  # or "suggest"
-    start_date="2024-01-01T00:00:00Z",
-    end_date="2024-01-31T23:59:59Z"
-)
+healing_result = client.self_healing.heal_agent(agent_id="your-agent-id")
 ```
 
 ### Webhook Management
 
 ```python
-# List all webhooks
+# Create a webhook
+webhook = client.webhooks.create(
+    name="Agent Monitoring",
+    url="https://my-endpoint.com/webhook",
+    events=["agent_self_healing_triggered", "feedback_submitted"]
+)
+
+print(f"✅ Created webhook: {webhook['name']}")
+
+# List webhooks
 webhooks = client.webhooks.list()
 
-# Create a new webhook
-webhook = client.webhooks.create(
-    name="My Webhook",
-    url="https://my-endpoint.com/webhook",
-    events=["agent_self_healing_triggered", "feedback_submitted"],
-    headers={"Authorization": "Bearer token"},
-    retry_count=3,
-    timeout=10,
-    is_active=True
-)
-
-# Update webhook
-updated_webhook = client.webhooks.update(
-    webhook_id=123,
-    name="Updated Webhook Name",
-    is_active=False
-)
-
 # Test webhook
-test_result = client.webhooks.test(webhook_id=123)
-
-# Get webhook history
-history = client.webhooks.get_history(webhook_id=123)
+test_result = client.webhooks.test(webhook_id=webhook['id'])
 
 # Delete webhook
-client.webhooks.delete(webhook_id=123)
+client.webhooks.delete(webhook_id=webhook['id'])
 ```
 
-## 🛠️ Convenience Functions
-
-For quick operations, you can use the convenience functions:
+### Quick Functions
 
 ```python
-import os
 from enable_ai_sdk import quick_agent_register, quick_feedback_submit
 
 # Quick agent registration
 agent = quick_agent_register(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
+    api_key="your-key",
     name="Quick Agent",
     agent_type="customer-support"
 )
 
 # Quick feedback submission
 feedback = quick_feedback_submit(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
+    api_key="your-key",
     prompt="What is your return policy?",
     response="Our return policy allows returns within 30 days.",
     tool="CustomerFeedback",
@@ -258,11 +384,10 @@ feedback = quick_feedback_submit(
 The SDK provides specific exception types for different error scenarios:
 
 ```python
-import os
 from enable_ai_sdk import EnableAIClient, AuthenticationError, ValidationError, RateLimitError
 
 try:
-    client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
+    client = EnableAIClient(api_key="invalid-key")
     agent = client.agents.register(name="Test", agent_type="test", llm="test")
 except AuthenticationError as e:
     print(f"Authentication failed: {e}")
@@ -333,8 +458,8 @@ import time
 def main():
     # Initialize client
     client = EnableAIClient(
-        api_key=os.getenv('ENABLE_AI_API_KEY'),
-        base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
+        api_key="your-api-key",
+        base_url="https://your-backend.com"
     )
     
     # Register an agent
@@ -411,8 +536,7 @@ def register_agent():
     )
     return jsonify({
         'agent_id': agent.id,
-        'name': agent.name,
-        'status': 'registered'
+        'name': agent.name
     })
 
 @app.route('/submit_feedback', methods=['POST'])
@@ -422,22 +546,25 @@ def submit_feedback():
         prompt=data['prompt'],
         response=data['response'],
         tool=data['tool'],
-        use_case=data['use_case']
+        use_case=data['use_case'],
+        agent_id=data['agent_id']
     )
     return jsonify({
         'score': feedback.score,
-        'issue': feedback.issue
+        'feedback_id': feedback.feedback_id
     })
+
+if __name__ == '__main__':
+    app.run(debug=True)
 ```
 
 ### Django Integration
 
 ```python
-import os
-import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from enable_ai_sdk import EnableAIClient
+import json
 
 client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
 
@@ -454,137 +581,92 @@ def register_agent(request):
             'agent_id': agent.id,
             'name': agent.name
         })
+
+@csrf_exempt
+def submit_feedback(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        feedback = client.analytics.submit_feedback(
+            prompt=data['prompt'],
+            response=data['response'],
+            tool=data['tool'],
+            use_case=data['use_case'],
+            agent_id=data['agent_id']
+        )
+        return JsonResponse({
+            'score': feedback.score,
+            'feedback_id': feedback.feedback_id
+        })
 ```
 
-## 🔒 Security Best Practices
-
-**Important**: The SDK is designed to be secure, but users are responsible for implementing proper security practices in their applications.
-
-### 1. **Secure API Key Management** ⚠️
-Never hardcode API keys in your source code. Always use environment variables:
+### FastAPI Integration
 
 ```python
-import os
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from enable_ai_sdk import EnableAIClient
 
-# ✅ SECURE: Use environment variables
-client = EnableAIClient(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
-    base_url=os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
-)
+app = FastAPI()
+client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
 
-# ❌ INSECURE: Never do this
-client = EnableAIClient(
-    api_key="sk-1234567890abcdef",  # Don't hardcode!
-    base_url="https://api.enable.ai"
-)
-```
+class AgentRequest(BaseModel):
+    name: str
+    agent_type: str
+    llm: str
 
-### 2. **Use HTTPS in Production** ⚠️
-Always use HTTPS URLs in production environments:
+class FeedbackRequest(BaseModel):
+    prompt: str
+    response: str
+    tool: str
+    use_case: str
+    agent_id: str
 
-```python
-# ✅ SECURE: Use HTTPS
-client = EnableAIClient(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
-    base_url="https://api.enable.ai"  # HTTPS for production
-)
-
-# ❌ INSECURE: Don't use HTTP in production
-client = EnableAIClient(
-    api_key=os.getenv('ENABLE_AI_API_KEY'),
-    base_url="http://localhost:5001"  # Only for development
-)
-```
-
-### 3. **Implement Proper Error Handling** ⚠️
-Handle errors gracefully without exposing sensitive information:
-
-```python
-import logging
-from enable_ai_sdk import EnableAIClient, EnableAIError
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-def safe_api_call(func, *args, **kwargs):
+@app.post("/register_agent")
+async def register_agent(request: AgentRequest):
     try:
-        return func(*args, **kwargs)
-    except EnableAIError as e:
-        logger.error(f"EnableAI API error: {e}")
-        return None
+        agent = client.agents.register(
+            name=request.name,
+            agent_type=request.agent_type,
+            llm=request.llm
+        )
+        return {
+            'agent_id': agent.id,
+            'name': agent.name
+        }
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
-        return None
+        raise HTTPException(status_code=400, detail=str(e))
 
-# Usage
-client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
-agent = safe_api_call(client.agents.register, "Test Agent", "customer-support", "claude-3-5-sonnet-20241022")
-```
-
-## 🚀 Production Considerations
-
-### Environment Variables
-
-### Error Handling
-
-```python
-import logging
-from enable_ai_sdk import EnableAIClient, EnableAIError
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-def safe_api_call(func, *args, **kwargs):
+@app.post("/submit_feedback")
+async def submit_feedback(request: FeedbackRequest):
     try:
-        return func(*args, **kwargs)
-    except EnableAIError as e:
-        logger.error(f"EnableAI API error: {e}")
-        return None
+        feedback = client.analytics.submit_feedback(
+            prompt=request.prompt,
+            response=request.response,
+            tool=request.tool,
+            use_case=request.use_case,
+            agent_id=request.agent_id
+        )
+        return {
+            'score': feedback.score,
+            'feedback_id': feedback.feedback_id
+        }
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
-        return None
-
-# Usage
-client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
-agent = safe_api_call(client.agents.register, "Test Agent", "customer-support", "claude-3-5-sonnet-20241022")
+        raise HTTPException(status_code=400, detail=str(e))
 ```
 
-### Rate Limiting
+## 🚀 Getting Started
 
-```python
-import time
-from enable_ai_sdk import EnableAIClient, RateLimitError
-
-def api_call_with_retry(client, func, *args, **kwargs):
-    max_retries = 3
-    retry_delay = 1
-    
-    for attempt in range(max_retries):
-        try:
-            return func(*args, **kwargs)
-        except RateLimitError:
-            if attempt < max_retries - 1:
-                time.sleep(retry_delay * (2 ** attempt))  # Exponential backoff
-                continue
-            raise
-        except Exception as e:
-            raise e
-
-# Usage
-client = EnableAIClient(api_key=os.getenv('ENABLE_AI_API_KEY'))
-agent = api_call_with_retry(client, client.agents.register, "Test Agent", "customer-support", "claude-3-5-sonnet-20241022")
-```
+1. **Install the SDK**: `pip install enable-ai-sdk`
+2. **Get your API key**: Sign up at [EnableAI](https://enable.ai)
+3. **Wrap your agent**: Use the drop-in integration above
+4. **Start monitoring**: Everything is automatic!
 
 ## 📞 Support
 
-For support and questions:
-
-- **Documentation**: [https://www.weenable.ai](https://www.weenable.ai)
-- **API Reference**: [https://www.weenable.ai](https://www.weenable.ai)
-- **GitHub Issues**: [https://github.com/dmartin4506/enable-ai-sdk/issues](https://github.com/dmartin4506/enable-ai-sdk/issues)
-- **Email**: support@weenable.ai
+- **Documentation**: [https://docs.enable.ai](https://docs.enable.ai)
+- **GitHub Issues**: [https://github.com/enable-ai/sdk/issues](https://github.com/enable-ai/sdk/issues)
+- **Email Support**: support@enable.ai
 
 ## 📄 License
 
-This SDK is licensed under the MIT License. See the LICENSE file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 

@@ -7,62 +7,64 @@ Welcome to the EnableAI SDK samples! This directory contains progressive example
 The samples are organized in a progressive learning path:
 
 ### 📚 Step 1: Beginner (01-beginner)
-**Goal**: Verify SDK installation and basic setup
-- **File**: `test_sdk_import.py`
-- **What it tests**: SDK import, client initialization, basic connectivity
-- **Time**: ~2 minutes
+**Goal**: Learn the drop-in integration approach
+- **File**: `drop_in_integration.py` - **NEW!** Drop-in SDK integration (3 lines!)
+- **File**: `test_sdk_import.py` - Verify SDK installation and basic setup
+- **What it tests**: Drop-in integration, SDK import, client initialization, basic connectivity
+- **Time**: ~3 minutes
 - **Prerequisites**: None (just install the SDK)
 
 ### 🚀 Step 2: Intermediate (02-intermediate)
-**Goal**: Test core SDK functionality
-- **File**: `simple_agent_template.py`
-- **What it tests**: Agent registration, feedback submission, analytics, self-healing
-- **Time**: ~5 minutes
+**Goal**: Test advanced drop-in integration and core SDK functionality
+- **File**: `drop_in_advanced.py` - **NEW!** Advanced drop-in integration with real AI models
+- **File**: `simple_agent_template.py` - Core SDK functionality
+- **What it tests**: Advanced drop-in integration, agent registration, feedback submission, analytics, self-healing
+- **Time**: ~8 minutes
 - **Prerequisites**: API key and backend URL
 
 ### 🔧 Step 3: Advanced (03-advanced)
 **Goal**: Test all SDK features with interactive options
-- **File**: `agent_template.py`
-- **What it tests**: Everything + webhooks, interactive testing, detailed analytics
-- **Time**: ~10-15 minutes
-- **Prerequisites**: API key and backend URL
-
-### 🤖 Step 4: Real Agent (03-advanced)
-**Goal**: Test with actual AI agents using real AI providers
-- **File**: `real_agent_template.py`
-- **What it tests**: Real AI agents with OpenAI/Claude + EnableAI integration
+- **File**: `agent_template.py` - **What it tests**: Everything + webhooks, interactive testing, detailed analytics
+- **File**: `real_agent_template.py` - **What it tests**: Real AI agents with OpenAI/Claude + EnableAI integration
 - **Time**: ~15-20 minutes
-- **Prerequisites**: API key, backend URL, and OpenAI/Anthropic API keys
+- **Prerequisites**: API key and backend URL
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 ```bash
 pip install requests
-pip install enable_ai_sdk
+pip install enable-ai-sdk
 ```
 
-### Step 1: Test SDK Installation
+### Step 1: Test Drop-in Integration (Recommended)
 ```bash
 cd samples/01-beginner
-python test_sdk_import.py
+python drop_in_integration.py
 ```
 
-### Step 2: Test Core Features
+### Step 2: Test Advanced Drop-in Integration
+```bash
+cd ../02-intermediate
+# Edit drop_in_advanced.py to add your API key
+python drop_in_advanced.py
+```
+
+### Step 3: Test Core Features
 ```bash
 cd ../02-intermediate
 # Edit simple_agent_template.py to add your API key
 python simple_agent_template.py
 ```
 
-### Step 3: Test Advanced Features
+### Step 4: Test Advanced Features
 ```bash
 cd ../03-advanced
 # Edit agent_template.py to add your API key
 python agent_template.py
 ```
 
-### Step 4: Test Real AI Agents (Optional)
+### Step 5: Test Real AI Agents (Optional)
 ```bash
 cd ../03-advanced
 # Edit real_agent_template.py to add your API keys
@@ -70,6 +72,69 @@ python real_agent_template.py
 ```
 
 ## 📁 Sample Details
+
+### 01-beginner/drop_in_integration.py - **NEW!**
+**Purpose**: Learn the drop-in integration approach - just import and wrap your agent!
+
+**What it does**:
+- ✅ Demonstrates 3-line drop-in integration
+- ✅ Shows how to wrap your existing AI model
+- ✅ Explains what happens automatically
+- ✅ Covers key benefits and next steps
+
+**Expected output**:
+```
+🚀 EnableAI Drop-in SDK Integration - Beginner Level
+============================================================
+This is the simplest way to integrate your AI agent!
+Just import and wrap your agent - everything else is automatic!
+============================================================
+
+📝 Step 1: Define your existing AI model function
+✅ Your AI model function defined
+
+🚀 Step 2: Create monitored agent (3 lines!)
+✅ Monitored agent created successfully!
+
+🎯 Step 3: Use it normally - everything is automatic!
+📤 Test 1: Sending prompt: 'What is your return policy?'
+📥 Response: 'Response to: What is your return policy?'
+✅ Interaction automatically monitored!
+
+🎉 That's it! Your agent is now automatically monitored!
+```
+
+### 02-intermediate/drop_in_advanced.py - **NEW!**
+**Purpose**: Advanced drop-in integration with real AI models and production features
+
+**What it does**:
+- ✅ Advanced configuration options
+- ✅ Custom agent class implementation
+- ✅ AWS Lambda integration example
+- ✅ Production configuration settings
+- ✅ Real AI model integration patterns
+
+**Expected output**:
+```
+🚀 EnableAI Drop-in SDK Integration - Intermediate Level
+============================================================
+Advanced drop-in integration with real AI models and configuration
+============================================================
+
+📝 Method 1: Simple drop-in with advanced configuration
+✅ Advanced monitored agent created successfully!
+   - Auto-healing enabled
+   - Async reporting enabled
+   - Timeout and retry configured
+
+🧪 Testing the monitored agent
+📤 Test 1: 'What is your return policy?'
+📥 Response: 'Our return policy allows returns within 30 days...'
+⏱️  Response time: 0.05s
+✅ Automatically monitored and evaluated!
+
+🎉 Your agent is now production-ready with automatic monitoring!
+```
 
 ### 01-beginner/test_sdk_import.py
 **Purpose**: Verify your SDK installation and basic functionality
@@ -135,156 +200,159 @@ This is Step 2: Testing Core SDK Functionality
 ✅ Feedback submitted - Score: 85.0
 
 📊 Getting agent analytics...
-✅ Analytics retrieved:
-   Agent: My Test Agent
-   Score Trend: improving
-   Average Score: 85.0
-   Feedback Count: 1
+✅ Agent insights retrieved:
+   - Trend: improving
+   - Average Score: 78.5
+   - Recent Issues: 2
+   - Suggested Actions: 3
 
-🎉 Core functionality test completed successfully!
+🔧 Running self-healing scan...
+✅ Self-healing scan completed:
+   - Agents scanned: 1
+   - Agents flagged: 0
+
+🎉 All core functionality tests passed!
 ```
 
 ### 03-advanced/agent_template.py
-**Purpose**: Comprehensive testing with interactive features
+**Purpose**: Test all SDK features with interactive options
 
 **What it does**:
-- ✅ Everything from intermediate level
-- ✅ Interactive menu for selective testing
-- ✅ Webhook management (create, test, delete)
-- ✅ Detailed analytics with issues and suggestions
-- ✅ Full test suite with user interaction
-- ✅ Advanced error handling
+- ✅ All core functionality
+- ✅ Webhook management
+- ✅ Interactive testing options
+- ✅ Detailed analytics
+- ✅ Advanced configuration
+- ✅ Error handling
 
-**Features**:
-- **Interactive Menu**: Test features one by one
-- **Webhook Testing**: Create and test webhooks
-- **Detailed Analytics**: Comprehensive performance insights
-- **Error Handling**: Robust error reporting
-- **Customizable**: Easy to modify test data
+**Expected output**:
+```
+🚀 EnableAI SDK Advanced Test Script
+============================================================
+This is Step 3: Testing All SDK Features
+============================================================
+
+🔧 Configuration Options:
+   - Auto-healing: Enabled
+   - Async reporting: Enabled
+   - Webhook notifications: Enabled
+   - Detailed analytics: Enabled
+
+🤖 Agent Management:
+✅ Agent registered: Advanced Test Agent
+✅ Agent updated with new description
+✅ Agent analytics retrieved
+
+🔗 Webhook Management:
+✅ Webhook created: Test Webhook
+✅ Webhook tested successfully
+✅ Webhook history retrieved
+
+📊 Advanced Analytics:
+✅ Detailed performance metrics
+✅ Trend analysis
+✅ Issue categorization
+✅ Suggested improvements
+
+🎉 All advanced features tested successfully!
+```
 
 ### 03-advanced/real_agent_template.py
-**Purpose**: Real AI agents with actual AI capabilities
+**Purpose**: Test with actual AI agents using real AI providers
 
 **What it does**:
-- ✅ Real AI agent using OpenAI/Claude APIs
-- ✅ Integration with EnableAI for feedback evaluation
-- ✅ Interactive chat mode with real responses
-- ✅ Automated testing with predefined queries
-- ✅ Real-time performance monitoring
-- ✅ Fallback to mock responses if no AI provider
+- ✅ Real OpenAI/Claude integration
+- ✅ Production-ready agent setup
+- ✅ Advanced monitoring features
+- ✅ Real-time performance tracking
+- ✅ Comprehensive testing suite
 
-**Features**:
-- **Real AI Responses**: Uses actual OpenAI GPT or Claude models
-- **Interactive Chat**: Chat with the agent in real-time
-- **Feedback Integration**: Every response gets evaluated by EnableAI
-- **Performance Tracking**: Monitor agent performance over time
-- **Flexible Configuration**: Use OpenAI, Claude, or mock responses
+**Expected output**:
+```
+🚀 EnableAI Real Agent Integration Test
+============================================================
+This is Step 4: Testing with Real AI Models
+============================================================
 
-## 🔧 Configuration
+🔧 Real AI Model Integration:
+✅ OpenAI client initialized
+✅ Claude client initialized
+✅ Agent models configured
 
-### Required Configuration
-Both intermediate and advanced samples require:
+🤖 Real Agent Testing:
+📤 Test 1: Customer support query
+📥 OpenAI Response: "Our return policy allows..."
+📊 Quality Score: 87.5
+✅ Automatically monitored!
 
-```python
-# Your API credentials
-API_KEY = "your-actual-api-key-here"
-BASE_URL = "https://your-actual-backend.com"
+📤 Test 2: Technical support query
+📥 Claude Response: "To reset your password..."
+📊 Quality Score: 92.0
+✅ Automatically monitored!
+
+📊 Performance Summary:
+   - Total interactions: 10
+   - Average quality score: 89.2
+   - Response time average: 1.2s
+   - Issues detected: 0
+
+🎉 Real agent integration successful!
 ```
 
-### Optional Configuration
-Advanced sample also supports:
+## 🎯 Key Learning Points
 
-```python
-# Agent settings
-AGENT_NAME = "My Custom Agent"
-AGENT_TYPE = "customer-support"  # or "sales-assistant", "technical-support"
-AGENT_LLM = "claude-3-5-sonnet-20241022"
+### Drop-in Integration (Recommended Approach)
+1. **Just import and wrap**: `create_monitored_agent()` in 3 lines
+2. **Everything automatic**: No manual monitoring required
+3. **Production ready**: Works with any AI model
+4. **Zero configuration**: Defaults work for most use cases
 
-# Test data customization
-TEST_PROMPTS = ["Your custom prompts..."]
-TEST_RESPONSES = ["Your custom responses..."]
-```
+### Manual API Access (Advanced Users)
+1. **Direct control**: Full API access for custom integrations
+2. **Advanced features**: Webhooks, detailed analytics, custom workflows
+3. **Production deployment**: Enterprise-grade monitoring and management
+4. **Custom integrations**: Build your own monitoring systems
 
-## 🐛 Troubleshooting
+## 🚀 Getting Started
+
+### For Most Users (Recommended)
+1. **Start with drop-in integration**: `01-beginner/drop_in_integration.py`
+2. **Test advanced features**: `02-intermediate/drop_in_advanced.py`
+3. **Deploy to production**: Use the patterns shown in the samples
+
+### For Advanced Users
+1. **Test core functionality**: `02-intermediate/simple_agent_template.py`
+2. **Explore all features**: `03-advanced/agent_template.py`
+3. **Real AI integration**: `03-advanced/real_agent_template.py`
+
+## 📚 Additional Resources
+
+- **Main Documentation**: [README.md](../README.md)
+- **API Reference**: [SDK_README.md](../SDK_README.md)
+- **Installation Guide**: [INSTALLATION_GUIDE.md](../INSTALLATION_GUIDE.md)
+- **Drop-in Guide**: [DROP_IN_SDK_SUMMARY.md](../DROP_IN_SDK_SUMMARY.md)
+
+## 🆘 Troubleshooting
 
 ### Common Issues
+1. **Import errors**: Make sure SDK is installed: `pip install enable-ai-sdk`
+2. **API key errors**: Check your API key and agent ID
+3. **Connection errors**: Verify your base URL and network connectivity
+4. **Rate limiting**: Add delays between requests in testing
 
-1. **Import Error**
-   ```bash
-   pip install enable_ai_sdk
-   ```
+### Getting Help
+- Check the error messages for specific guidance
+- Review the configuration in each sample
+- Test with the beginner samples first
+- Contact support if issues persist
 
-2. **Authentication Error**
-   - Check your API key is correct
-   - Ensure the API key has proper permissions
+## 🎉 Success!
 
-3. **Connection Error**
-   - Verify your backend URL is correct
-   - Check that your backend is running
+Once you've completed the samples, you'll have:
+- ✅ Working drop-in integration
+- ✅ Automatic agent monitoring
+- ✅ Production-ready configuration
+- ✅ Real-time performance tracking
+- ✅ Self-healing capabilities
 
-4. **Configuration Error**
-   - Make sure you've updated the placeholder values
-   - Check that all required fields are provided
-
-### Debug Mode
-For detailed error information, add this to any sample:
-
-```python
-import logging
-logging.basicConfig(level=logging.DEBUG)
-```
-
-## 📊 Expected Results
-
-### Successful Test Results
-When everything works correctly, you should see:
-
-- ✅ All import tests pass
-- ✅ Client initializes successfully
-- ✅ API health check passes
-- ✅ Agent registration succeeds
-- ✅ Feedback submission works
-- ✅ Analytics are retrieved
-- ✅ Self-healing scan completes
-- ✅ Agent listing works
-
-### What Each Test Validates
-
-| Test | What it validates |
-|------|-------------------|
-| Import | SDK installation and basic imports |
-| Client Init | SDK client setup and configuration |
-| Health Check | API connectivity and authentication |
-| Agent Registration | Agent creation and management |
-| Feedback | Response evaluation and scoring |
-| Analytics | Performance insights and trends |
-| Self-Healing | Agent monitoring and health checks |
-| Webhooks | Real-time notification system |
-
-## 🎯 Next Steps
-
-After completing the samples:
-
-1. **Explore the SDK documentation** for detailed API reference
-2. **Check the examples directory** for integration examples
-3. **Review the tests directory** for comprehensive test cases
-4. **Integrate the SDK** into your own applications
-5. **Set up webhooks** for production monitoring
-6. **Implement self-healing** for automated agent management
-
-## 📞 Support
-
-If you encounter issues:
-
-1. Check the error messages for specific details
-2. Verify your configuration is correct
-3. Test with the beginner sample first
-4. Check the SDK documentation
-5. Review the troubleshooting section above
-6. Contact support if issues persist
-
----
-
-**Happy testing! 🚀**
-
-*Start with the beginner sample and work your way up to master all SDK features.* 
+Your AI agents are now automatically monitored and continuously improving! 🚀 
