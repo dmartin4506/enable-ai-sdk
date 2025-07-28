@@ -34,6 +34,23 @@ Usage:
     
     # Manage webhooks
     webhooks = client.webhooks.list()
+    
+    # Use agent monitoring (drop-in solution)
+    from enable_ai_sdk import create_monitored_agent
+    
+    def my_ai_function(prompt):
+        # Your AI logic here
+        return "AI response"
+    
+    monitored_agent = create_monitored_agent(
+        agent_id=agent.id,
+        api_key="your-api-key",
+        ai_model_func=my_ai_function,
+        base_url="https://your-backend.com"
+    )
+    
+    # Use the monitored agent
+    response = monitored_agent.generate_response("What is your return policy?")
 """
 
 from .client import (
@@ -54,6 +71,12 @@ from .exceptions import (
     AuthenticationError,
     ValidationError,
     RateLimitError
+)
+
+from .agent_monitor import (
+    AgentMonitor,
+    SimpleAgentMonitor,
+    create_monitored_agent
 )
 
 __version__ = "1.0.0"
@@ -77,4 +100,9 @@ __all__ = [
     "AuthenticationError",
     "ValidationError",
     "RateLimitError",
+    
+    # Agent monitoring
+    "AgentMonitor",
+    "SimpleAgentMonitor", 
+    "create_monitored_agent",
 ] 
