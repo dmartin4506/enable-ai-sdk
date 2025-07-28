@@ -26,7 +26,7 @@ def main():
     # Configuration
     api_key = os.getenv('ENABLE_AI_API_KEY', 'your-api-key-here')
     agent_id = os.getenv('ENABLE_AI_AGENT_ID', 'your-agent-id-here')
-    base_url = os.getenv('ENABLE_AI_BASE_URL', 'https://api.enable.ai')
+    base_url = os.getenv('ENABLE_AI_BASE_URL', 'https://api.weenable.ai')
     
     print(f"🔧 Configuration:")
     print(f"   API Key: {api_key[:20]}..." if len(api_key) > 20 else f"   API Key: {api_key}")
@@ -92,7 +92,9 @@ def main():
             print("✅ Interaction automatically monitored!")
             print("   - Performance reported for evaluation")
             print("   - Quality scored by Claude")
-            print("   - Self-healing triggered if needed")
+            print("   - Self-healing scan triggered if needed")
+            print("   - Agent flagged for healing if performance is poor")
+            print("   - Prompt improvements applied automatically")
             print()
             
             # Small delay between requests

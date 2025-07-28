@@ -6,10 +6,11 @@ A **drop-in SDK** for automatic agent monitoring and self-healing. Simply wrap y
 
 - **Drop-in Integration**: Just import and wrap your agent
 - **Automatic Monitoring**: Every interaction gets evaluated
-- **Self-Healing**: Automatic improvements when performance degrades
+- **Self-Healing**: Two-step process (scan + heal) for reliable improvements
 - **Quality Evaluation**: Claude-powered 1-100 scoring
 - **Real-time Analytics**: Performance insights and trends
 - **Background Monitoring**: Continuous health checking
+- **Error Prevention**: Automatic handling of self-healing validation
 
 ## 📦 Installation
 
@@ -39,8 +40,44 @@ response = monitored_agent.generate_response("What is your return policy?")
 # The SDK automatically:
 # - Reports performance for evaluation
 # - Gets quality scores from Claude
-# - Triggers self-healing when needed
-# - Applies prompt improvements
+# - Triggers self-healing scan when needed
+# - Flags agents for healing if performance is poor
+# - Applies prompt improvements automatically
+# - Handles all validation and error prevention
+```
+
+## 🩹 Self-Healing Process
+
+The SDK implements a robust two-step self-healing process to prevent errors and ensure reliable improvements:
+
+### Step 1: Performance Scan
+- Automatically detects when agents need healing (status: warning/critical)
+- Triggers a self-healing scan to flag underperforming agents
+- Validates that agents meet healing criteria before proceeding
+
+### Step 2: Prompt Improvement
+- Only flagged agents can be healed (prevents 400 errors)
+- Generates improved system prompts using Claude
+- Applies changes automatically or suggests improvements
+
+### Error Prevention
+- **No more 400 errors**: SDK handles all validation automatically
+- **Smart detection**: Only heals agents that actually need improvement
+- **Graceful fallback**: Continues working even if healing fails
+
+```python
+# The SDK handles everything automatically:
+monitored_agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
+
+# Self-healing happens in the background:
+# 1. Detects poor performance
+# 2. Triggers scan to flag agent
+# 3. Applies prompt improvements
+# 4. No errors or manual intervention needed!
 ```
 
 ## 📚 API Reference
@@ -74,7 +111,8 @@ import openai
 class MonitoredCustomerSupportAgent(AgentMonitor):
     def _call_ai_model(self, prompt: str, **kwargs) -> str:
         # Your AI model integration here
-        response = openai.ChatCompletion.create(
+        client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": self.system_prompt},
@@ -657,7 +695,7 @@ async def submit_feedback(request: FeedbackRequest):
 ## 🚀 Getting Started
 
 1. **Install the SDK**: `pip install enable-ai-sdk`
-2. **Get your API key**: Sign up at [EnableAI](https://enable.ai)
+2. **Get your API key**: Sign up at [WeEnable.AI](https://www.weenable.ai)
 3. **Wrap your agent**: Use the drop-in integration above
 4. **Start monitoring**: Everything is automatic!
 
