@@ -701,6 +701,7 @@ async def submit_feedback(request: FeedbackRequest):
 
 ## 📞 Support
 
+- **Self-Healing Walkthrough**: [SELF_HEALING_WALKTHROUGH.md](SELF_HEALING_WALKTHROUGH.md) - Complete guide to self-healing
 - **Documentation**: [https://docs.enable.ai](https://docs.enable.ai)
 - **GitHub Issues**: [https://github.com/enable-ai/sdk/issues](https://github.com/enable-ai/sdk/issues)
 - **Email Support**: support@enable.ai
