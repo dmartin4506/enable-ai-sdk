@@ -5,6 +5,33 @@ All notable changes to the EnableAI SDK will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2024-07-28
+
+### Added
+- **Sampling-Based Monitoring**: New `create_sampled_agent()` function for cost-effective production monitoring
+- **SamplingManager Class**: Advanced batch processing for sampled interactions
+- **Cost Control**: 95% reduction in API calls with 5% sampling rate
+- **Batch Processing**: Efficient batch reporting for high-volume agents
+- **Performance-Based Sampling**: Enhanced sampling when agent performance is poor
+- **Sampling Statistics**: `get_sampling_stats()` method for monitoring sampling effectiveness
+- **Comprehensive Documentation**: New SAMPLING_GUIDE.md with detailed usage guide
+- **Backward Compatibility**: Existing code continues to work unchanged
+
+### Features
+- Configurable sampling rates (1% to 100%)
+- Daily sample limits and batch size controls
+- Performance threshold-based enhanced sampling
+- Batch processing for efficient API usage
+- Sampling statistics and monitoring
+- Production-ready cost control
+
+### Documentation
+- Updated README.md with sampling examples
+- New SAMPLING_GUIDE.md with comprehensive guide
+- Use case recommendations for different scenarios
+- Migration guide from full monitoring to sampling
+- Cost impact analysis and benefits
+
 ## [1.1.0] - 2024-07-27
 
 ### Added
