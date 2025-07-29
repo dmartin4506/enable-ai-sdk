@@ -6,11 +6,13 @@ A **drop-in SDK** for automatic agent monitoring and self-healing. Simply wrap y
 
 - **Drop-in Integration**: Just import and wrap your agent
 - **Automatic Monitoring**: Every interaction gets evaluated
+- **Sampling-Based Monitoring**: Optional cost-effective monitoring for production
 - **Self-Healing**: Two-step process (scan + heal) for reliable improvements
 - **Quality Evaluation**: Claude-powered 1-100 scoring
 - **Real-time Analytics**: Performance insights and trends
 - **Background Monitoring**: Continuous health checking
 - **Error Prevention**: Automatic handling of self-healing validation
+- **Batch Processing**: Efficient batch reporting for high-volume agents
 
 ## 📦 Installation
 
@@ -24,6 +26,7 @@ pip install -e .
 
 ## 🔑 Quick Start (3 Lines!)
 
+### Full Monitoring (Default)
 ```python
 from enable_ai_sdk.agent_monitor import create_monitored_agent
 
@@ -45,6 +48,87 @@ response = monitored_agent.generate_response("What is your return policy?")
 # - Applies prompt improvements automatically
 # - Handles all validation and error prevention
 ```
+
+### Sampling-Based Monitoring (New!)
+```python
+from enable_ai_sdk.agent_monitor import create_sampled_agent
+
+# Only 5% of interactions are reported (cost-effective for production)
+sampled_agent = create_sampled_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
+# Use it normally - only sampled interactions are reported!
+response = sampled_agent.generate_response("What is your return policy?")
+
+# Benefits:
+# - 95% reduction in API calls
+# - Cost-effective for high-volume agents
+# - Still provides meaningful performance insights
+# - Perfect for production deployments
+```
+
+## 📊 Sampling-Based Monitoring
+
+The new sampling feature allows you to monitor high-volume agents cost-effectively by only reporting a percentage of interactions.
+
+### Why Use Sampling?
+
+- **Cost Control**: 95% reduction in API calls with 5% sampling
+- **Privacy**: Not every conversation is analyzed
+- **Performance**: Reduced latency and bandwidth
+- **Scalability**: Handle more agents with less load
+- **Quality**: Still get meaningful performance insights
+
+### Sampling Configuration
+
+```python
+# Quick setup with 5% sampling
+agent = create_sampled_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
+# Advanced configuration
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    enable_sampling=True,
+    sampling_config={
+        "strategy": "percentage",
+        "rate": 0.1,  # 10% sampling
+        "batch_size": 50,  # Send batch every 50 samples
+        "max_daily_samples": 500,
+        "performance_threshold": 70,  # Sample more when performance is poor
+        "sampling_window": "daily"
+    }
+)
+```
+
+### Sampling Statistics
+
+```python
+# Get sampling statistics
+stats = agent.get_sampling_stats()
+print(f"Daily samples: {stats['daily_sample_count']}")
+print(f"Batch queue size: {stats['batch_queue_size']}")
+print(f"Sampling rate: {stats['sampling_rate']}")
+```
+
+### Use Cases
+
+| Use Case | Recommended Sampling | Benefits |
+|----------|-------------------|----------|
+| **Development/Testing** | Full monitoring (100%) | Complete visibility |
+| **Production (Low Volume)** | 10-20% sampling | Cost control |
+| **Production (High Volume)** | 1-5% sampling | Maximum efficiency |
+| **Critical Agents** | Full monitoring | Quality assurance |
 
 ## 🩹 Self-Healing Process
 
@@ -85,21 +169,30 @@ monitored_agent = create_monitored_agent(
 ### Simple Integration
 
 ```python
-from enable_ai_sdk.agent_monitor import create_monitored_agent
+from enable_ai_sdk.agent_monitor import create_monitored_agent, create_sampled_agent
 
 # Your existing AI model function
 def your_ai_model(prompt: str) -> str:
     return "Response from your AI model"
 
-# Create monitored agent (3 lines!)
+# Full monitoring (default)
 monitored_agent = create_monitored_agent(
     agent_id="your-agent-id",
     api_key="your-api-key",
     ai_model_func=your_ai_model
 )
 
-# Use it normally
-response = monitored_agent.generate_response("Hello!")
+# Sampling-based monitoring (new!)
+sampled_agent = create_sampled_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
+# Use them normally
+response1 = monitored_agent.generate_response("Hello!")
+response2 = sampled_agent.generate_response("Hello!")
 ```
 
 ### Advanced Integration
@@ -135,23 +228,49 @@ response = agent.generate_response("What is your return policy?")
 
 ```python
 import json
-from enable_ai_sdk.agent_monitor import create_monitored_agent
+from enable_ai_sdk.agent_monitor import create_monitored_agent, create_sampled_agent
 
 # Your AI model function
 def my_ai_model(prompt: str) -> str:
     return "Response from your AI model"
 
-# Create monitored agent
+# Create monitored agent (full monitoring)
 agent = create_monitored_agent(
     agent_id="your-agent-id",
     api_key="your-api-key",
     ai_model_func=my_ai_model
 )
 
+# Or use sampling for cost-effective production
+sampled_agent = create_sampled_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=my_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
 def lambda_handler(event, context):
     user_input = event['body']['message']
     response = agent.generate_response(user_input)  # Automatically monitored!
     return {'response': response}
+```
+
+### Sampling Statistics and Monitoring
+
+```python
+# Get sampling statistics
+stats = sampled_agent.get_sampling_stats()
+print(f"Daily samples: {stats['daily_sample_count']}")
+print(f"Batch queue size: {stats['batch_queue_size']}")
+print(f"Sampling rate: {stats['sampling_rate']}")
+print(f"Max daily samples: {stats['max_daily_samples']}")
+
+# Check if sampling is enabled
+if sampled_agent.enable_sampling:
+    print("✅ Sampling is enabled")
+    print(f"📊 Current batch queue: {stats['batch_queue_size']} interactions")
+else:
+    print("📊 Full monitoring mode")
 ```
 
 ## 📊 What Gets Tracked Automatically
@@ -161,6 +280,16 @@ def lambda_handler(event, context):
 - **Response Time**: How long your agent takes
 - **Issue Categories**: Hallucination, tone, format, etc.
 - **Usage Patterns**: When and how your agent is used
+- **Sampling Statistics**: Daily counts, batch queues, sampling rates
+
+### Cost Impact Comparison
+
+| Monitoring Type | API Calls | Cost Reduction | Use Case |
+|----------------|-----------|----------------|----------|
+| **Full Monitoring** | 1 per interaction | 0% | Development, testing, critical agents |
+| **10% Sampling** | 1 per 10 interactions | 90% | Production (low volume) |
+| **5% Sampling** | 1 per 20 interactions | 95% | Production (high volume) |
+| **1% Sampling** | 1 per 100 interactions | 99% | High-volume production |
 
 ### Self-Healing Triggers
 - **Poor Performance**: Average score < 75
@@ -176,12 +305,39 @@ def lambda_handler(event, context):
 
 ## 🔧 Configuration Options
 
-### Basic Setup
+### Basic Setup (Full Monitoring)
 ```python
 agent = create_monitored_agent(
     agent_id="your-agent-id",
     api_key="your-api-key",
     ai_model_func=your_ai_model
+)
+```
+
+### Sampling-Based Monitoring
+```python
+# Quick sampling setup
+agent = create_sampled_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
+# Advanced sampling configuration
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    enable_sampling=True,
+    sampling_config={
+        "strategy": "percentage",
+        "rate": 0.1,  # 10% sampling
+        "batch_size": 50,  # Send batch every 50 samples
+        "max_daily_samples": 500,
+        "performance_threshold": 70,  # Sample more when performance is poor
+        "sampling_window": "daily"
+    }
 )
 ```
 
@@ -193,7 +349,9 @@ agent = create_monitored_agent(
     ai_model_func=your_ai_model,
     base_url="https://your-backend.com",
     auto_healing=True,      # Enable automatic prompt improvements
-    report_async=True       # Report performance asynchronously
+    report_async=True,      # Report performance asynchronously
+    enable_sampling=True,   # Enable sampling-based monitoring
+    sampling_config={...}   # Custom sampling configuration
 )
 ```
 
@@ -215,14 +373,24 @@ agent = MyMonitoredAgent(
 ### For Agent Developers
 1. **Drop-in Integration**: Just import and wrap your agent
 2. **Automatic Monitoring**: Every interaction gets evaluated
-3. **Self-Healing**: Automatic improvements when needed
-4. **Real-time Insights**: Performance analytics and recommendations
+3. **Sampling Options**: Choose between full monitoring or cost-effective sampling
+4. **Self-Healing**: Automatic improvements when needed
+5. **Real-time Insights**: Performance analytics and recommendations
 
 ### For Agent Operators
 1. **Zero Manual Work**: Everything is automatic
-2. **Proactive Alerts**: Get notified when agents need attention
-3. **Continuous Improvement**: Agents get better over time
-4. **Comprehensive Analytics**: Detailed performance tracking
+2. **Cost Control**: 95% reduction in API calls with sampling
+3. **Proactive Alerts**: Get notified when agents need attention
+4. **Continuous Improvement**: Agents get better over time
+5. **Comprehensive Analytics**: Detailed performance tracking
+6. **Production Ready**: Sampling perfect for high-volume deployments
+
+### For High-Volume Production
+1. **Cost Efficiency**: Only pay for sampled interactions
+2. **Privacy**: Not every conversation analyzed
+3. **Performance**: Reduced latency and bandwidth
+4. **Scalability**: Handle more agents with less load
+5. **Quality**: Still get meaningful performance insights
 
 ## 🔄 Complete Workflow
 
@@ -254,10 +422,45 @@ agent = create_monitored_agent(
 response = agent.generate_response("What is your return policy?")
 
 # Everything is automatic:
-# ✅ Performance reported
+# ✅ Performance reported (or sampled based on configuration)
 # ✅ Quality evaluated
 # ✅ Self-healing triggered if needed
 # ✅ Prompt improvements applied
+# ✅ Batch processing for efficiency (if sampling enabled)
+```
+
+### 4. Choose Your Monitoring Strategy
+
+```python
+# For development/testing - full monitoring
+dev_agent = create_monitored_agent(
+    agent_id="dev-agent",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
+
+# For production (low volume) - 10% sampling
+prod_low_agent = create_sampled_agent(
+    agent_id="prod-low-agent",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.1  # 10% sampling
+)
+
+# For production (high volume) - 5% sampling
+prod_high_agent = create_sampled_agent(
+    agent_id="prod-high-agent",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
+# For critical agents - full monitoring
+critical_agent = create_monitored_agent(
+    agent_id="critical-agent",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
 ```
 
 ## 📚 Additional Resources
@@ -696,8 +899,52 @@ async def submit_feedback(request: FeedbackRequest):
 
 1. **Install the SDK**: `pip install enable-ai-sdk`
 2. **Get your API key**: Sign up at [WeEnable.AI](https://www.weenable.ai)
-3. **Wrap your agent**: Use the drop-in integration above
-4. **Start monitoring**: Everything is automatic!
+3. **Choose your monitoring strategy**:
+   - **Full monitoring**: For development and critical agents
+   - **Sampling**: For cost-effective production deployment
+4. **Wrap your agent**: Use the drop-in integration above
+5. **Start monitoring**: Everything is automatic!
+
+## 🔄 Migration Guide
+
+### From Full Monitoring to Sampling
+
+```python
+# Old code (still works!)
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model
+)
+
+# New code with sampling (optional)
+sampled_agent = create_sampled_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    sampling_rate=0.05  # 5% sampling
+)
+
+# Or enable sampling on existing agent
+agent = create_monitored_agent(
+    agent_id="your-agent-id",
+    api_key="your-api-key",
+    ai_model_func=your_ai_model,
+    enable_sampling=True,
+    sampling_config={
+        "rate": 0.05,
+        "batch_size": 100,
+        "max_daily_samples": 1000
+    }
+)
+```
+
+### Backward Compatibility
+
+- ✅ **Existing code works unchanged**
+- ✅ **No breaking changes**
+- ✅ **Sampling is optional**
+- ✅ **Easy migration path**
 
 ## 📞 Support
 

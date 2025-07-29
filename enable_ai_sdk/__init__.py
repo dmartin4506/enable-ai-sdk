@@ -76,7 +76,8 @@ from .exceptions import (
 from .agent_monitor import (
     AgentMonitor,
     SimpleAgentMonitor,
-    create_monitored_agent
+    create_monitored_agent,
+    create_sampled_agent
 )
 
 __version__ = "1.0.0"
@@ -105,4 +106,5 @@ __all__ = [
     "AgentMonitor",
     "SimpleAgentMonitor", 
     "create_monitored_agent",
+    "create_sampled_agent",
 ] 
